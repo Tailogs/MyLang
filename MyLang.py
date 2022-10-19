@@ -38,8 +38,6 @@ def ao(lisp, operation):
     if operation == '*':
         x = float(a) * float(b)
     if operation == '/':
-        print(a)
-        print(b)
         x = float(a) / float(b)
         
     var.update({lisp[4] : x})
@@ -82,7 +80,15 @@ def lixer(file):
                 if lisp[1] in var:
                     print(var.get(lisp[1]))
                 else:
-                    print(lisp[1])
+                    list_join = join_strs(lisp)
+                    if '"' in list_join:
+                        v1 = list_join.find('"')
+                        v1 += 1
+                        v2 = list_join.rfind('"')
+                        result = list_join[v1:v2]
+                        print(result)
+                    else:
+                        print(lisp[1])
             if lisp[0] == 'gets':
                 if lisp[1] in var:
                     i = input()
