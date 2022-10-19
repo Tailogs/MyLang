@@ -9,10 +9,17 @@ def main():
     file = input("Введите название файла с расширением: ")
     lixer(file)
 
+# Объединяем в строку целый список
+def join_strs(strs):
+    result = ''
+    for s in strs:
+         result += ' ' + s
+    return result[1:]
+
 # ao - arithmetic operation
 def ao(lisp, operation):
+    global x, a, b, c
     if lisp[4] in var:
-        global x, a, b, c
         if lisp[0] in var:
             a = var.get(lisp[0])
         else:
@@ -31,6 +38,8 @@ def ao(lisp, operation):
     if operation == '*':
         x = float(a) * float(b)
     if operation == '/':
+        print(a)
+        print(b)
         x = float(a) / float(b)
         
     var.update({lisp[4] : x})
@@ -44,13 +53,29 @@ def lixer(file):
             if lisp == []:
                 continue
             if lisp[0] == 'var':
-                if len(lisp) == 4:
-                    var.update({lisp[1] : lisp[3]})
+                if len(lisp) >= 4:
+                    list_join = join_strs(lisp)
+                    if '"' in list_join:
+                        v1 = list_join.find('"')
+                        v1 += 1
+                        v2 = list_join.rfind('"')
+                        result = list_join[v1:v2]
+                        var.update({lisp[1] : result})
+                    else:
+                        var.update({lisp[1] : lisp[3]})
                 else:
                     var.update({lisp[1] : "None"})
             if lisp[1] == '=':
                 if lisp[0] in var:
-                    var.update({lisp[0] : lisp[2]})
+                    list_join = join_strs(lisp)
+                    if '"' in list_join:
+                        v1 = list_join.find('"')
+                        v1 += 1
+                        v2 = list_join.rfind('"')
+                        result = list_join[v1:v2]
+                        var.update({lisp[0] : result})
+                    else:
+                        var.update({lisp[0] : lisp[2]})
                 else:
                     print(f">>> Ошибка в строке {l} - присваивание значения не существующей переменной")
             if lisp[0] == 'puts':
@@ -91,3 +116,4 @@ if __name__ == '__main__':
 # Добавить комментарии
 # Добавить знак просьбы о вводе значения. Способ i = input('> ') не работает
 # Ну и всё остальное
+# Добавить вывол типа переменной и его значения через специальную функцию
